@@ -32,6 +32,7 @@ let V_SPREAD = 0.9;
 let zoomSpeed = 20;
 let zoomF = 100;
 let zoom = 1.00;
+let running = true;
 
 function setup() {
 
@@ -41,16 +42,16 @@ function setup() {
   let height = window.innerHeight;
   createCanvas(width, height, WEBGL);
 
+  angleMode(DEGREES);
+
   // let n = 50;
   //
   // for (let i = 0; i < n; i++) {
   //   universe[i] = makeRandomThing();
   // }
 
-  universe[0] = new Thing(100, createVector(0, 100, 0), createVector(0, 0, 0));
-  universe[1] = new Thing(500, createVector(200, 200, 0),
-    createVector(0, 0, 0));
-  // universe[2] = new Thing(1000, createVector(300, 0, 300),createVector(0, 0, 0));
+  universe[0] = new Thing(100, createVector(400, 0, 0), createVector(0, 0, 0));
+  universe[1] = new Thing(200, createVector(0,400, 0, 0), createVector(0, 0, 0));
 
 }
 
@@ -72,33 +73,67 @@ function makeRandomThing() {
 }
 
 function draw() {
-  tick();
+  orbitControl();
+
+  if (running) {
+    tick();
+  }
+
+  background(0);
+
+  let size = universe.length;
+
+  drawUniverseCenter();
+
+  for (let k = 0; k < size; k++) {
+    drawThing(universe[k]);
+  }
+}
+
+function drawUniverseCenter() {
+
+  push();
+
+  push();
+  rotateZ(-90);
+  fill(255, 0, 0);
+  draw3dArrow(2, 100);
+  pop();
+
+  push();
+  rotateX(0);
+  fill(0, 255, 0);
+  draw3dArrow(2, 100);
+  pop();
+
+  push();
+  rotateX(90);
+  fill(0,0, 255);
+  draw3dArrow(2, 100);
+  pop();
+
+  pop();
+
+}
+
+function draw3dArrow(thick, size) {
+  let bodySize = size * 0.7;
+  let coneSize = size * 0.3;
+
+  push();
+  translate(0, bodySize / 2);
+  strokeWeight(0);
+  cylinder(thick, bodySize);
+  let tr = bodySize / 2 + coneSize / 2;
+  translate(0, tr, 0);
+  cone(thick * 4, coneSize);
+  pop();
 }
 
 function tick() {
   T++;
 
-
-
-
-  background(0);
-  pointLight(255, 255, 255, mouseX, mouseY, mouseX);
-  specularMaterial(250, 0, 0);
-
-  fill(200);
-
-
-
-
-
-
-
-  push();
-  stroke(255);
-  fill(255);
-  strokeWeight(10);
-  line(-5, -5, 5, 5);
-  pop();
+  $("#time").text((T * dt).toFixed(4) + "s");
 
   let size = universe.length;
   let newUniverse = Array(size);
@@ -144,11 +179,13 @@ function tick() {
   }
 
   for (let k = 0; k < size; k++) {
-    let tk = newUniverse[k];
-    universe[k] = tk;
-    drawThing(tk);
+    universe[k] = newUniverse[k];
   }
 
+}
+
+function toggleSimulation() {
+  running = !running;
 }
 
 function drawMetainformation(t) {
@@ -184,9 +221,9 @@ function drawMetainformation(t) {
 
   let fZoom = 5000000;
   let fLenght = fSize * fZoom;
-  translate(0, fLenght/2);
+  translate(0, fLenght / 2);
 
-  let sr = r/2;
+  let sr = r / 2;
 
   // push();
   // fill(255,0,0);
@@ -206,8 +243,6 @@ function drawMetainformation(t) {
   // cylinder(sr, f.z*fZoom);
   //
   // pop();
-
-
 
   pop();
 }

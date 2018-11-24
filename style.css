@@ -13,6 +13,8 @@ h1 {
     bottom: 1em;
     right: 1em;
     padding: 1em 1em;
-    border: #BBB solid 1px;
-    background:#DDD;
+    background:rgba(100,100,100,0.4);
+}
+#time {
+    padding: 0 1em;
 }
