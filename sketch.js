@@ -21,9 +21,8 @@ function getRandomColor() {
 
 let T = 0;
 let universe = [];
-let history = [];
-let dt = 0.001; //s
-let G = 5;
+let DELTA_TIME = 0.1; //s
+let G = 6.67408;
 let MASS_DISTRIBUTION = 5;
 let X_SPREAD = 900;
 let Y_SPREAD = 900;
@@ -50,8 +49,10 @@ function setup() {
   //   universe[i] = makeRandomThing();
   // }
 
-  universe[0] = new Thing(100, createVector(400, 0, 0), createVector(0, 0, 0));
-  universe[1] = new Thing(200, createVector(0,400, 0, 0), createVector(0, 0, 0));
+  universe[0] = new Thing(100, createVector(400, 0, 100),
+    createVector(5, 0, 0));
+  universe[1] = new Thing(200, createVector(100, 200, 0, 0),
+    createVector(0, -5, 0));
 
 }
 
@@ -85,40 +86,79 @@ function draw() {
 
   drawUniverseCenter();
 
+  draw0XZY(createVector(100, 100, 100));
+
   for (let k = 0; k < size; k++) {
     drawThing(universe[k]);
   }
 }
 
-function drawUniverseCenter() {
-
+function drawXYZ(vector) {
   push();
 
   push();
   rotateZ(-90);
-  fill(255, 0, 0);
-  draw3dArrow(2, 100);
+  fill(255, 0, 0, 50);
+  draw3dArrow(vector.x);
   pop();
 
   push();
   rotateX(0);
-  fill(0, 255, 0);
-  draw3dArrow(2, 100);
+  fill(0, 255, 0, 50);
+  draw3dArrow(vector.y);
   pop();
 
   push();
   rotateX(90);
-  fill(0,0, 255);
-  draw3dArrow(2, 100);
+  fill(0, 0, 255, 50);
+  draw3dArrow(vector.z);
   pop();
 
   pop();
-
 }
 
-function draw3dArrow(thick, size) {
+function drawUniverseCenter() {
+  drawXYZ(createVector(100, 100, 100));
+}
+
+function draw0XZY(v) {
+
+  push();
+
+  fill(255, 255, 0);
+
+  let xx = v.x * v.x;
+  let yy = v.y * v.y;
+  let zz = v.z * v.z;
+
+  let hxy = Math.sqrt(xx + yy);
+  let cosxy = v.x / hxy;
+  let anglexy = Math.acos(cosxy) * 180 / Math.PI;
+
+  let hxz = Math.sqrt(xx + zz);
+  let cosxz = v.x / hxz;
+  let anglexz = Math.acos(cosxz) * 180 / Math.PI;
+
+  rotateZ(-anglexy);
+  rotateX(anglexz);
+
+  let size = Math.sqrt(xx + yy + zz);
+  draw3dArrow(size);
+
+  pop();
+}
+
+function draw3dArrow(size) {
+  let thick = 2;
+
+  let absSize = Math.abs(size);
+  let sizeSign = Math.sign(size);
   let bodySize = size * 0.7;
   let coneSize = size * 0.3;
+  if (absSize > 100) {
+    coneSize = (sizeSign * 30);
+    bodySize = size - coneSize;
+  }
 
   push();
   translate(0, bodySize / 2);
@@ -133,7 +173,7 @@ function draw3dArrow(thick, size) {
 function tick() {
   T++;
 
-  $("#time").text((T * dt).toFixed(4) + "s");
+  $("#time").text((T * DELTA_TIME).toFixed(4) + "s");
 
   let size = universe.length;
   let newUniverse = Array(size);
@@ -168,10 +208,10 @@ function tick() {
 
     let aceleration = force.div(a.mass);
 
-    let dV = aceleration.mult(dt);
+    let dV = aceleration.mult(DELTA_TIME);
     let newVel = aVel.copy().add(dV);
 
-    let dS = aVel.copy().mult(dt);
+    let dS = aVel.copy().mult(DELTA_TIME);
     let newPos = aPos.copy().add(dS);
 
     newUniverse[i] = new Thing(a.mass, newPos, newVel, force, a.color);
@@ -190,59 +230,14 @@ function toggleSimulation() {
 
 function drawMetainformation(t) {
 
-  let centerX = 0;
-  let centerY = 0;
-  let centerZ = 0;
-
   push();
   fill(255);
-  stroke(255, 0, 0);
+  stroke(255, 255, 0);
+  tint(255, 177);
 
-  let v = t.vel;
-  beginShape(LINES);
-  vertex(centerX, centerY, centerZ);
-  vertex(centerX + v.x * zoomSpeed, centerY + v.y * zoomSpeed,
-    centerZ + v.z * zoomSpeed);
-  endShape();
-
-  let f = t.f;
-  let fSize = Math.sqrt(f.x * f.x + f.y * f.y + f.z * f.z);
-  let r = t.r;
-
-  line(
-    centerX,
-    centerY,
-    centerZ,
-    centerX + f.x * zoomF,
-    centerY + f.y * zoomF,
-    centerZ + f.z * zoomF
-  );
-  fill(255, 0, 0);
-
-  let fZoom = 5000000;
-  let fLenght = fSize * fZoom;
-  translate(0, fLenght / 2);
-
-  let sr = r / 2;
-
-  // push();
-  // fill(255,0,0);
-  // rotateX(90);
-  // cylinder(sr, f.x*fZoom);
-  // pop();
-  //
-  // push();
-  // fill(0,255,0);
-  // rotateY(90);
-  // cylinder(sr, f.y*fZoom);
-  // pop();
-  //
-  // push();
-  // fill(0,0,255);
-  // rotateZ(90);
-  // cylinder(sr, f.z*fZoom);
-  //
-  // pop();
+  let f = t.f.copy().mult(1000000);
+  draw0XZY(f);
+  drawXYZ(f);
 
   pop();
 }
