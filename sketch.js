@@ -31,7 +31,8 @@ let V_SPREAD = 0.9;
 let zoomSpeed = 20;
 let zoomF = 100;
 let zoom = 1.00;
-let running = true;
+let running = false;
+let logTick = null;
 
 function setup() {
 
@@ -49,12 +50,73 @@ function setup() {
   //   universe[i] = makeRandomThing();
   // }
 
-  universe[0] = new Thing(100, createVector(400, 0, 100),
-    createVector(5, 0, 0));
-  universe[1] = new Thing(200, createVector(100, 200, 0, 0),
-    createVector(0, -5, 0));
+  // universe[0] = new Thing(100, createVector(400, 0, 100), createVector(5, 0, 0));
+  // universe[1] = new Thing(200, createVector(100, 200, 0, 0), createVector(0, -5, 0));
 
 }
+
+function draw() {
+  smooth();
+
+  if (frameCount % 50 === 0) {
+    $("#fps").text(frameRate().toFixed(0) + "FPS");
+  }
+
+  orbitControl();
+  if (running) {
+    tick();
+  }
+
+  background(0);
+
+  drawXYZPlanes();
+
+  let size = universe.length;
+
+  let t = T / 50;
+  let x = (mouseX - width / 2);
+  let y = (mouseY - height / 2);
+  let z = Math.cos(t) * 100;
+
+  drawUniverseCenter();
+  drawXYZ(createVector(x, y, z),2,255,50);
+  draw0XZY(createVector(x, y, z));
+
+  for (let k = 0; k < size; k++) {
+    drawThing(universe[k]);
+  }
+}
+
+function drawXYZPlanes() {
+  let size = 400;
+  let step = 20;
+
+  let ss = size / 2;
+
+  push();
+  fill(100, 0, 0);
+  translate(-ss, 0, 0);
+
+  for (let x = -ss; x <= ss; x += step) {
+    cylinder(0.2, size);
+    translate(step, 0, 0);
+  }
+  pop();
+  push();
+  fill(0, 100, 0);
+
+  translate(0, -ss, 0);
+  rotateZ(90);
+
+  for (let y = -ss; y <= ss; y += step) {
+    cylinder(0.2, size);
+    translate(step, 0, 0);
+  }
+  pop();
+
+}
+
+/////////////////////////////
 
 function makeRandomThing() {
   let massMultiplier = Math.random() * MASS_DISTRIBUTION;
@@ -73,83 +135,72 @@ function makeRandomThing() {
   return new Thing(mass, pos, vel)
 }
 
-function draw() {
-  orbitControl();
-
-  if (running) {
-    tick();
-  }
-
-  background(0);
-
-  let size = universe.length;
-
-  drawUniverseCenter();
-
-  draw0XZY(createVector(100, 100, 100));
-
-  for (let k = 0; k < size; k++) {
-    drawThing(universe[k]);
-  }
-}
-
-function drawXYZ(vector) {
+function drawXYZ(vector, thick = 2, intensity = 255, alpha = 255) {
   push();
 
   push();
   rotateZ(-90);
-  fill(255, 0, 0, 50);
-  draw3dArrow(vector.x);
+  fill(intensity, 0, 0, 255);
+  draw3dArrow(vector.x, thick);
   pop();
 
   push();
   rotateX(0);
-  fill(0, 255, 0, 50);
-  draw3dArrow(vector.y);
+  fill(0, intensity, 0, 255);
+  draw3dArrow(vector.y, thick);
   pop();
 
   push();
   rotateX(90);
-  fill(0, 0, 255, 50);
-  draw3dArrow(vector.z);
+  fill(0, 0, intensity, 255);
+  draw3dArrow(vector.z, thick);
   pop();
 
+  translate(300, 300, 300);
+
+  cylinder(5, 100);
+
   pop();
+
 }
 
 function drawUniverseCenter() {
-  drawXYZ(createVector(100, 100, 100));
+  drawXYZ(createVector(200, 200, 200), 0.5, 100, 50);
 }
 
 function draw0XZY(v) {
 
   push();
 
-  fill(255, 255, 0);
+  fill(255, 0, 255, 155);
 
   let xx = v.x * v.x;
   let yy = v.y * v.y;
   let zz = v.z * v.z;
 
-  let hxy = Math.sqrt(xx + yy);
-  let cosxy = v.x / hxy;
-  let anglexy = Math.acos(cosxy) * 180 / Math.PI;
+  let hYX = Math.sqrt(yy + xx);
+  let cosYX = v.y / hYX;
+  let signX = Math.sign(v.x);
+  let angleYX = -1 * signX * Math.acos(cosYX) * 180 / Math.PI;
 
-  let hxz = Math.sqrt(xx + zz);
-  let cosxz = v.x / hxz;
-  let anglexz = Math.acos(cosxz) * 180 / Math.PI;
+  let hYZ = Math.sqrt(yy + zz);
+  let cosYZ = v.y / hYZ;
+  let signZ = Math.sign(v.z);
+  let angleYZ = signZ * Math.acos(cosYZ) * 180 / Math.PI;
 
-  rotateZ(-anglexy);
-  rotateX(anglexz);
+  logTick = {angleYX: angleYX, angleYZ: angleYZ};
+
+  rotateZ(angleYX);
+  rotateX(angleYZ);
 
   let size = Math.sqrt(xx + yy + zz);
   draw3dArrow(size);
+  box(10);
 
   pop();
 }
 
-function draw3dArrow(size) {
-  let thick = 2;
+function draw3dArrow(size, thick = 2) {
 
   let absSize = Math.abs(size);
   let sizeSign = Math.sign(size);
@@ -165,7 +216,9 @@ function draw3dArrow(size) {
   strokeWeight(0);
   cylinder(thick, bodySize);
   let tr = bodySize / 2 + coneSize / 2;
-  translate(0, tr, 0);
+  translate(5, tr / 2, 0);
+  box(5);
+  translate(-5, tr / 2, 0);
   cone(thick * 4, coneSize);
   pop();
 }
@@ -222,6 +275,14 @@ function tick() {
     universe[k] = newUniverse[k];
   }
 
+  if (T % 50 === 0) {
+    console.clear();
+  }
+
+  if (logTick) {
+
+    console.log(logTick);
+  }
 }
 
 function toggleSimulation() {

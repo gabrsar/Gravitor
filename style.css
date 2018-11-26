@@ -1,20 +1,27 @@
-body{
-    padding: 0;
-    margin: 0;
+* {
+  font-family: 'Oxygen', sans-serif;
+}
+
+body {
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #configuration {
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
-    padding: 1em 1em;
-    background:rgba(100,100,100,0.4);
+  color: #FFF;
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  padding: 1em 1em;
+  background: rgba(100, 100, 100, 0.4);
 }
+
 #time {
-    padding: 0 1em;
+  padding: 0 1em;
+  font-family: 'Roboto Mono', monospace;
 }
