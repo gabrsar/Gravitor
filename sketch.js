@@ -36,7 +36,7 @@ let logTick = null;
 
 function setup() {
 
-  frameRate(120);
+  frameRate(12);
 
   let width = window.innerWidth;
   let height = window.innerHeight;
@@ -74,12 +74,12 @@ function draw() {
   let size = universe.length;
 
   let t = T / 50;
-  let x = (mouseX - width / 2);
-  let y = (mouseY - height / 2);
-  let z = Math.cos(t) * 100;
+  let x = parseInt($("#x").val());
+  let y = parseInt($("#y").val());
+  let z = parseInt($("#z").val());
 
   drawUniverseCenter();
-  drawXYZ(createVector(x, y, z),2,255,50);
+  drawXYZ(createVector(x, y, z), 2, 255, 50);
   draw0XZY(createVector(x, y, z));
 
   for (let k = 0; k < size; k++) {
@@ -168,36 +168,74 @@ function drawUniverseCenter() {
   drawXYZ(createVector(200, 200, 200), 0.5, 100, 50);
 }
 
+function toDeg(i) {
+  return i * 180 / Math.PI;
+}
+
 function draw0XZY(v) {
 
   push();
-
+  //
   fill(255, 0, 255, 155);
-
+  //
+  // let vx = v.x !== 0;
+  // let vy = v.y !== 0;
+  // let vz = v.z !== 0;
+  //
   let xx = v.x * v.x;
   let yy = v.y * v.y;
   let zz = v.z * v.z;
+  //
+  // let signX = sign(v.x);
+  // let signY = sign(v.y);
+  // let signZ = sign(v.z);
+  //
+  // let angleXY = null;
+  // let angleYZ = null;
+  // let angleXZ = null;
+  //
+  // if (vx && vy) {
+  //   let hXY = Math.sqrt(xx + yy);
+  //   let cosXY = v.x / hXY;
+  //   angleXY = toDeg(signY * Math.acos(cosXY));
+  // }
+  //
+  // if (vy && vz) {
+  //   let hYZ = Math.sqrt(yy + zz);
+  //   let cosYZ = v.y / hYZ;
+  //   angleYZ = toDeg(signY * Math.acos(cosYZ));
+  // }
+  //
+  // if (vx && vz) {
+  //   let hXZ = Math.sqrt(xx + zz);
+  //   let cosXZ = v.x / hXZ;
+  //   angleXZ = toDeg(signZ * Math.acos(cosXZ));
+  // }
+  //
+  // if(!vx){
+  //   rotateX(angleYZ);
+  // }else if (!vy){
+  //   rotateY(angleXZ);
+  // }else if (!vz){
+  //   rotateZ(angleXY);
+  // }else {
+  //   rotateX(angleYZ);
+  //   rotateY(angleXZ);
+  // }
 
-  let hYX = Math.sqrt(yy + xx);
-  let cosYX = v.y / hYX;
-  let signX = Math.sign(v.x);
-  let angleYX = -1 * signX * Math.acos(cosYX) * 180 / Math.PI;
-
-  let hYZ = Math.sqrt(yy + zz);
-  let cosYZ = v.y / hYZ;
-  let signZ = Math.sign(v.z);
-  let angleYZ = signZ * Math.acos(cosYZ) * 180 / Math.PI;
-
-  logTick = {angleYX: angleYX, angleYZ: angleYZ};
-
-  rotateZ(angleYX);
-  rotateX(angleYZ);
+  rotateX(parseInt($("#ax").val()));
+  rotateY(parseInt($("#ay").val()));
+  rotateZ(parseInt($("#az").val()));
 
   let size = Math.sqrt(xx + yy + zz);
   draw3dArrow(size);
   box(10);
 
   pop();
+}
+
+function sign(i) {
+  return i >= 0 ? 1 : -1;
 }
 
 function draw3dArrow(size, thick = 2) {
