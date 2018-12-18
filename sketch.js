@@ -31,12 +31,12 @@ let V_SPREAD = 0.9;
 let zoomSpeed = 20;
 let zoomF = 100;
 let zoom = 1.00;
-let running = false;
+let running = true;
 let logTick = null;
 
 function setup() {
 
-  frameRate(12);
+  frameRate(30);
 
   let width = window.innerWidth;
   let height = window.innerHeight;
@@ -53,6 +53,10 @@ function setup() {
   // universe[0] = new Thing(100, createVector(400, 0, 100), createVector(5, 0, 0));
   // universe[1] = new Thing(200, createVector(100, 200, 0, 0), createVector(0, -5, 0));
 
+}
+
+function invertTime() {
+  DELTA_TIME = -DELTA_TIME;
 }
 
 function draw() {
@@ -73,14 +77,18 @@ function draw() {
 
   let size = universe.length;
 
-  let t = T / 50;
-  let x = parseInt($("#x").val());
-  let y = parseInt($("#y").val());
+  let t = T / 10;
+  // let x = parseInt($("#x").val());
+  let x = Math.sin(t) * 100;
+  // let y = parseInt($("#y").val());
+  let y = Math.cos(t) * 200;
   let z = parseInt($("#z").val());
 
   drawUniverseCenter();
   drawXYZ(createVector(x, y, z), 2, 255, 50);
   draw0XZY(createVector(x, y, z));
+
+  translate(100, 100, 200);
 
   for (let k = 0; k < size; k++) {
     drawThing(universe[k]);
@@ -156,10 +164,6 @@ function drawXYZ(vector, thick = 2, intensity = 255, alpha = 255) {
   draw3dArrow(vector.z, thick);
   pop();
 
-  translate(300, 300, 300);
-
-  cylinder(5, 100);
-
   pop();
 
 }
@@ -174,65 +178,103 @@ function toDeg(i) {
 
 function draw0XZY(v) {
 
-  push();
-  //
-  fill(255, 0, 255, 155);
-  //
-  // let vx = v.x !== 0;
-  // let vy = v.y !== 0;
-  // let vz = v.z !== 0;
-  //
   let xx = v.x * v.x;
   let yy = v.y * v.y;
   let zz = v.z * v.z;
-  //
-  // let signX = sign(v.x);
-  // let signY = sign(v.y);
-  // let signZ = sign(v.z);
-  //
-  // let angleXY = null;
-  // let angleYZ = null;
-  // let angleXZ = null;
-  //
-  // if (vx && vy) {
-  //   let hXY = Math.sqrt(xx + yy);
-  //   let cosXY = v.x / hXY;
-  //   angleXY = toDeg(signY * Math.acos(cosXY));
-  // }
-  //
-  // if (vy && vz) {
-  //   let hYZ = Math.sqrt(yy + zz);
-  //   let cosYZ = v.y / hYZ;
-  //   angleYZ = toDeg(signY * Math.acos(cosYZ));
-  // }
-  //
-  // if (vx && vz) {
-  //   let hXZ = Math.sqrt(xx + zz);
-  //   let cosXZ = v.x / hXZ;
-  //   angleXZ = toDeg(signZ * Math.acos(cosXZ));
-  // }
-  //
-  // if(!vx){
-  //   rotateX(angleYZ);
-  // }else if (!vy){
-  //   rotateY(angleXZ);
-  // }else if (!vz){
-  //   rotateZ(angleXY);
-  // }else {
-  //   rotateX(angleYZ);
-  //   rotateY(angleXZ);
-  // }
 
-  rotateX(parseInt($("#ax").val()));
-  rotateY(parseInt($("#ay").val()));
-  rotateZ(parseInt($("#az").val()));
+  push();
+  fill(255, 0, 255, 155);
+
+  let vx = v.x !== 0;
+  let vy = v.y !== 0;
+  let vz = v.z !== 0;
 
   let size = Math.sqrt(xx + yy + zz);
+
+  let signX = sign(v.x);
+  let signY = sign(v.y);
+  let signZ = sign(v.z);
+
+  let angleXY = null;
+  let angleYZ = null;
+  let angleXZ = null;
+
+  push();
+  translate(v.x, v.y, v.z);
+  sphere(5);
+  pop();
+
+  fill(255, 0, 255, 50);
+  sphere(size, 64, 64);
+
+  fill(255, 0, 255, 100);
+
+  if (vx || vy) {
+    let hXY = Math.sqrt(xx + yy);
+    let cosXY = v.y / hXY;
+    angleXY = -toDeg(Math.acos(cosXY)) * signX;
+    rotateZ(angleXY);
+  }
+
+  if (vy || vz) {
+    let hYZ = Math.sqrt(yy + zz);
+    let cosYZ = v.y / hYZ;
+    angleYZ = toDeg(signZ * Math.acos(cosYZ));
+  }
+
+  if (vx || vz) {
+    let hXZ = Math.sqrt(xx + zz);
+    let cosXZ = v.x / hXZ;
+    angleXZ = toDeg(signZ * Math.acos(cosXZ));
+  }
+
+  let debug = {
+    az: az,
+    x: v.x.toFixed(2),
+    y: v.y.toFixed(2),
+    z: v.z.toFixed(2),
+    angleYZ: angleYZ.toFixed(2),
+    angleXZ: angleXZ.toFixed(2),
+    angleXY: angleXY.toFixed(2),
+    size: size.toFixed(2)
+  };
+  $("#debug").text(JSON.stringify(debug));
   draw3dArrow(size);
-  box(10);
 
   pop();
 }
+
+// function draw0XZY(v) {
+//
+//   push();
+//   fill(255, 0, 255, 155);
+//
+//
+//
+//   let xx = v.x * v.x;
+//   let yy = v.y * v.y;
+//   let zz = v.z * v.z;
+//
+//   push();
+//   translate(v.x,v.y,v.z);
+//   box(10);
+//   pop();
+//
+//   let size = Math.sqrt(xx + yy + zz);
+//
+//   fill(255, 0, 255, 50);
+//   sphere(size, 64, 64);
+//
+//   fill(255, 0, 255, 100);
+//
+//   let debug = {x: ax, y: ay, z: az};
+//
+//   $("#debug").text(JSON.stringify(debug));
+//   draw3dArrow(size);
+//   box(10);
+//
+//   pop();
+// }
 
 function sign(i) {
   return i >= 0 ? 1 : -1;
@@ -262,9 +304,9 @@ function draw3dArrow(size, thick = 2) {
 }
 
 function tick() {
-  T++;
+  T += DELTA_TIME;
 
-  $("#time").text((T * DELTA_TIME).toFixed(4) + "s");
+  $("#time").text((T * Math.abs(DELTA_TIME)).toFixed(4) + "s");
 
   let size = universe.length;
   let newUniverse = Array(size);
@@ -332,7 +374,6 @@ function drawMetainformation(t) {
   push();
   fill(255);
   stroke(255, 255, 0);
-  tint(255, 177);
 
   let f = t.f.copy().mult(1000000);
   draw0XZY(f);

@@ -12,21 +12,31 @@
 </head>
 <body>
 <div id="inputs">
-  X <input type="range" max=200 min=-200 step=10 id="x"/>
-  Y <input type="range" max=200 min=-200 step=10 id="y"/>
-  Z <input type="range" max=200 min=-200 step=10 id="z"/>
 </div>
 
 <div id="angles">
-  X <input type="range" max=360 min=0 step=1 id="ax"/>
-  Y <input type="range" max=360 min=0 step=1 id="ay"/>
-  Z <input type="range" max=360 min=0 step=1 id="az"/>
+  <div id="size">
+    <p>Sizes</p>
+    X <input type="range" max=200 min=-200 step=10 id="x"/>
+    Y <input type="range" max=200 min=-200 step=10 id="y"/>
+    Z <input type="range" max=200 min=-200 step=10 id="z"/>
+  </div>
+  <div id="rotate">
+    <p>Rotate</p>
+    X <input type="range" max=360 min=0 step=1 id="ax"/>
+    Y <input type="range" max=360 min=0 step=1 id="ay"/>
+    Z <input type="range" max=360 min=0 step=1 id="az"/>
+  </div>
 </div>
+
 <div id="configuration">
   <span id="time"></span>
   <span id="fps"></span>
   <button onclick="tick();">TICK</button>
+  <button onclick="invertTime();">-1</button>
   <button onclick="toggleSimulation();">PAUSE</button>
+</div>
+<div id="debug">
 </div>
 </body>
 </html>

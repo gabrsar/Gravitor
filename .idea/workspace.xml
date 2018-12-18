@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69cfab4e-3515-4a72-b090-8e0bc49c5ccf" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/sandbox.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sandbox.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sketch.js" beforeDir="false" afterPath="$PROJECT_DIR$/sketch.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,26 +23,31 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sketch.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1069">
-              <caret line="227" column="24" selection-start-line="227" selection-start-column="24" selection-end-line="227" selection-end-column="24" />
+            <state relative-caret-position="392">
+              <caret line="214" column="45" selection-start-line="214" selection-start-column="45" selection-end-line="214" selection-end-column="45" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es2015.core.d.ts">
+        <entry file="file://$PROJECT_DIR$/sandbox.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="417">
-              <caret line="117" column="4" selection-start-line="117" selection-start-column="4" selection-end-line="117" selection-end-column="4" />
+            <state relative-caret-position="120">
+              <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sandbox.js">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="638">
-              <caret line="22" column="36" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
+            <state relative-caret-position="540">
+              <caret line="36" selection-start-line="36" selection-end-line="36" />
             </state>
           </provider>
         </entry>
@@ -47,8 +55,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
+            <state relative-caret-position="465">
+              <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -57,17 +65,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>a.vel</find>
-      <find>v</find>
-      <find>orb</find>
-      <find>0</find>
-      <find>pop</find>
-      <find>orbital</find>
-      <find>orbi</find>
-      <find>translate</find>
-      <find>cone</find>
-      <find>degree</find>
-      <find>set</find>
       <find>DT</find>
       <find>dt</find>
       <find>DELTA_TIME</find>
@@ -76,7 +73,6 @@
       <find>mult</find>
       <find>meta</find>
       <find>frame</find>
-      <find>tick</find>
       <find>cilin</find>
       <find>cil</find>
       <find>console</find>
@@ -85,6 +81,20 @@
       <find>unive</find>
       <find>setup</find>
       <find>sign</find>
+      <find>tick</find>
+      <find>configur</find>
+      <find>i</find>
+      <find>FPS</find>
+      <find>time</find>
+      <find>va</find>
+      <find>tint</find>
+      <find>color</find>
+      <find>arrow</find>
+      <find>fill</find>
+      <find>s</find>
+      <find>box</find>
+      <find>sphere</find>
+      <find>cylin</find>
     </findStrings>
     <replaceStrings>
       <replace>DELTA_TIME</replace>
@@ -100,6 +110,8 @@
         <option value="$PROJECT_DIR$/universe.js" />
         <option value="$PROJECT_DIR$/style.css" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/sandbox.html" />
+        <option value="$PROJECT_DIR$/sandbox.js" />
         <option value="$PROJECT_DIR$/sketch.js" />
       </list>
     </option>
@@ -111,9 +123,10 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="4" />
-    <option name="width" value="1698" />
-    <option name="height" value="932" />
+    <option name="x" value="584" />
+    <option name="y" value="112" />
+    <option name="width" value="1688" />
+    <option name="height" value="934" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -121,6 +134,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -132,7 +146,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -177,18 +190,20 @@
       <workItem from="1543062070948" duration="360000" />
       <workItem from="1543062583048" duration="10402000" />
       <workItem from="1543180225412" duration="11058000" />
-      <workItem from="1543878345906" duration="7261000" />
+      <workItem from="1543878345906" duration="7438000" />
+      <workItem from="1543961747240" duration="7127000" />
+      <workItem from="1545085609079" duration="3432000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52846000" />
+    <option name="totallyTimeSpent" value="63582000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="2560" height="1404" extended-state="6" />
+    <frame x="-4" y="0" width="2568" height="1408" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20126034" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30641985" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -200,7 +215,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.3291634" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32838154" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -220,31 +235,41 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/universe.js" />
-    <entry file="file://$PROJECT_DIR$/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es2015.core.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="417">
+        <state relative-caret-position="1560">
           <caret line="117" column="4" selection-start-line="117" selection-start-column="4" selection-end-line="117" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="638">
-          <caret line="22" column="36" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sketch.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1069">
-          <caret line="227" column="24" selection-start-line="227" selection-start-column="24" selection-end-line="227" selection-end-column="24" />
+        <state relative-caret-position="392">
+          <caret line="214" column="45" selection-start-line="214" selection-start-column="45" selection-end-line="214" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sandbox.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sandbox.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="39" selection-start-line="31" selection-start-column="39" selection-end-line="31" selection-end-column="39" />
         </state>
       </provider>
     </entry>
