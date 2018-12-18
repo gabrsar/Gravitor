@@ -77,11 +77,8 @@ function draw() {
 
   let size = universe.length;
 
-  let t = T / 10;
-  // let x = parseInt($("#x").val());
-  let x = Math.sin(t) * 100;
-  // let y = parseInt($("#y").val());
-  let y = Math.cos(t) * 200;
+  let x = parseInt($("#x").val());
+  let y = parseInt($("#y").val());
   let z = parseInt($("#z").val());
 
   drawUniverseCenter();
@@ -201,10 +198,13 @@ function draw0XZY(v) {
 
   push();
   translate(v.x, v.y, v.z);
+
   sphere(5);
+  fill(0, 0, 0, 255);
+  sphere(1);
   pop();
 
-  fill(255, 0, 255, 50);
+  fill(255, 0, 255, 10);
   sphere(size, 64, 64);
 
   fill(255, 0, 255, 100);
@@ -218,14 +218,9 @@ function draw0XZY(v) {
 
   if (vy || vz) {
     let hYZ = Math.sqrt(yy + zz);
-    let cosYZ = v.y / hYZ;
-    angleYZ = toDeg(signZ * Math.acos(cosYZ));
-  }
-
-  if (vx || vz) {
-    let hXZ = Math.sqrt(xx + zz);
-    let cosXZ = v.x / hXZ;
-    angleXZ = toDeg(signZ * Math.acos(cosXZ));
+    let sinYZ = v.z / hYZ;
+    angleYZ = toDeg(Math.asin(sinYZ));
+    rotateX(angleYZ);
   }
 
   let debug = {
@@ -233,9 +228,9 @@ function draw0XZY(v) {
     x: v.x.toFixed(2),
     y: v.y.toFixed(2),
     z: v.z.toFixed(2),
-    angleYZ: angleYZ.toFixed(2),
-    angleXZ: angleXZ.toFixed(2),
-    angleXY: angleXY.toFixed(2),
+    angleYZ: angleYZ ? angleYZ.toFixed(2) : 'NAN',
+    angleXY: angleXY ? angleXY.toFixed(2) : 'NAN',
+    angleXZ: angleXZ ? angleXZ.toFixed(2) : 'NAN',
     size: size.toFixed(2)
   };
   $("#debug").text(JSON.stringify(debug));
@@ -305,6 +300,10 @@ function draw3dArrow(size, thick = 2) {
 
 function tick() {
   T += DELTA_TIME;
+
+  let t = T / 10;
+  $("#x").val(Math.cos(t) * 200);
+  $("#y").val(Math.sin(t) * 200);
 
   $("#time").text((T * Math.abs(DELTA_TIME)).toFixed(4) + "s");
 

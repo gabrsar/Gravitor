@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69cfab4e-3515-4a72-b090-8e0bc49c5ccf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sandbox.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sandbox.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sketch.js" beforeDir="false" afterPath="$PROJECT_DIR$/sketch.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,8 +18,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sketch.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="214" column="45" selection-start-line="214" selection-start-column="45" selection-end-line="214" selection-end-column="45" />
+            <state relative-caret-position="1000">
+              <caret line="166" column="31" selection-start-line="166" selection-start-column="31" selection-end-line="166" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -65,8 +60,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>DT</find>
-      <find>dt</find>
       <find>DELTA_TIME</find>
       <find>XYZ</find>
       <find>mul</find>
@@ -81,7 +74,6 @@
       <find>unive</find>
       <find>setup</find>
       <find>sign</find>
-      <find>tick</find>
       <find>configur</find>
       <find>i</find>
       <find>FPS</find>
@@ -95,6 +87,9 @@
       <find>box</find>
       <find>sphere</find>
       <find>cylin</find>
+      <find>tick</find>
+      <find>angleXY</find>
+      <find>sphe</find>
     </findStrings>
     <replaceStrings>
       <replace>DELTA_TIME</replace>
@@ -192,18 +187,18 @@
       <workItem from="1543180225412" duration="11058000" />
       <workItem from="1543878345906" duration="7438000" />
       <workItem from="1543961747240" duration="7127000" />
-      <workItem from="1545085609079" duration="3432000" />
+      <workItem from="1545085609079" duration="8832000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63582000" />
+    <option name="totallyTimeSpent" value="68982000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="0" width="2568" height="1408" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30641985" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30641985" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -215,7 +210,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32838154" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32785603" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -244,8 +239,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sketch.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="214" column="45" selection-start-line="214" selection-start-column="45" selection-end-line="214" selection-end-column="45" />
+        <state relative-caret-position="1000">
+          <caret line="166" column="31" selection-start-line="166" selection-start-column="31" selection-end-line="166" selection-end-column="31" />
         </state>
       </provider>
     </entry>
