@@ -43,7 +43,7 @@ function getRandomColor() {
 let cX = 0;
 let cY = 0;
 let cZ = 0;
-let HISTORY_SIZE = 10;
+let HISTORY_SIZE = 50;
 let T = 0;
 let universe = [];
 let merges = [];
@@ -68,7 +68,7 @@ function setup() {
   blendMode(MULTIPLY);
   angleMode(DEGREES);
 
-  let n = 1;
+  let n = 100;
 
   for (let i = 0; i < n; i++) {
     universe[i] = makeRandomThing();
@@ -237,7 +237,7 @@ function tick() {
 
     let ssInterval = 1 / DELTA_TIME;
 
-    if (frameCount % 2 == 0 && running) {
+    if (frameCount % 5 == 0 && running) {
       a.history.push(a.pos);
     }
 
