@@ -316,7 +316,7 @@ function drawThing(t) {
   pop();
 }
 
-function drawHistoryX(t) {
+function drawHistory(t) {
   let c = t.color;
   t.history.forEach((h, i) => {
 
