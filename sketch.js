@@ -4,13 +4,34 @@ class Thing {
     pos = createVector(),
     vel = createVector(),
     f = createVector(),
-    color = getRandomColor()) {
+    color = getRandomColor(),
+    history = []) {
+
+    this.name = `Thing${Math.floor(Math.random()*1000)}`;
     this.mass = mass;
     this.pos = pos;
     this.vel = vel;
     this.f = f;
     this.r = Math.pow(mass, 1 / 3);
     this.color = color;
+    this.history = history;
+  }
+
+  consume(o) {
+
+    this.color = (this.mass > o.mass) ? this.color : o.color;
+    let t = this;
+
+    let totalMass = t.mass + o.mass;
+    let tMomentumV = t.vel.mult(t.mass);
+    let oMomentumV = o.vel.mult(o.mass);
+    let finalMomentumV = tMomentumV.add(oMomentumV);
+    let finalVelocity = finalMomentumV.div(totalMass);
+
+    this.mass = totalMass;
+    this.vel = finalVelocity;
+    this.r = Math.pow(this.mass, 1 / 3);
+
   }
 
 }
@@ -19,39 +40,39 @@ function getRandomColor() {
   return [Math.random() * 255, Math.random() * 255, Math.random() * 255];
 }
 
+let cX = 0;
+let cY = 0;
+let cZ = 0;
+let HISTORY_SIZE = 10;
 let T = 0;
 let universe = [];
+let merges = [];
 let DELTA_TIME = 0.1; //s
-let G = 6.67408;
-let MASS_DISTRIBUTION = 5;
-let X_SPREAD = 900;
-let Y_SPREAD = 900;
-let Z_SPREAD = 900;
+let G = 6.67408 * 10;
+let MASS_DISTRIBUTION = 4;
+let X_SPREAD = 400;
+let Y_SPREAD = 400;
+let Z_SPREAD = 400;
 let V_SPREAD = 0.9;
 let zoomSpeed = 20;
 let zoomF = 100;
 let zoom = 1.00;
-let running = true;
+let running = false;
 let logTick = null;
 
 function setup() {
-
   frameRate(30);
-
   let width = window.innerWidth;
   let height = window.innerHeight;
   createCanvas(width, height, WEBGL);
-
+  blendMode(MULTIPLY);
   angleMode(DEGREES);
 
-  // let n = 50;
-  //
-  // for (let i = 0; i < n; i++) {
-  //   universe[i] = makeRandomThing();
-  // }
+  let n = 1;
 
-  // universe[0] = new Thing(100, createVector(400, 0, 100), createVector(5, 0, 0));
-  // universe[1] = new Thing(200, createVector(100, 200, 0, 0), createVector(0, -5, 0));
+  for (let i = 0; i < n; i++) {
+    universe[i] = makeRandomThing();
+  }
 
 }
 
@@ -60,6 +81,7 @@ function invertTime() {
 }
 
 function draw() {
+
   smooth();
 
   if (frameCount % 50 === 0) {
@@ -73,17 +95,11 @@ function draw() {
 
   background(0);
 
-  drawXYZPlanes();
-
   let size = universe.length;
 
   let x = parseInt($("#x").val());
   let y = parseInt($("#y").val());
   let z = parseInt($("#z").val());
-
-  drawUniverseCenter();
-  drawXYZ(createVector(x, y, z), 2, 255, 50);
-  draw0XZY(createVector(x, y, z));
 
   translate(100, 100, 200);
 
@@ -99,24 +115,35 @@ function drawXYZPlanes() {
   let ss = size / 2;
 
   push();
-  fill(100, 0, 0);
+  translate(-ss / 2, -ss / 2, 0);
+
+  push();
+
+  stroke(100, 0, 0);
+
   translate(-ss, 0, 0);
 
   for (let x = -ss; x <= ss; x += step) {
-    cylinder(0.2, size);
+    beginShape();
+    vertex(0, 0, 0);
+    vertex(0, size, 0);
+    endShape();
     translate(step, 0, 0);
   }
   pop();
   push();
-  fill(0, 100, 0);
-
-  translate(0, -ss, 0);
+  stroke(0, 100, 0);
   rotateZ(90);
 
+  translate(0, -ss, 0);
   for (let y = -ss; y <= ss; y += step) {
-    cylinder(0.2, size);
+    beginShape();
+    vertex(0, 0, 0);
+    vertex(0, size, 0);
+    endShape();
     translate(step, 0, 0);
   }
+  pop();
   pop();
 
 }
@@ -127,183 +154,37 @@ function makeRandomThing() {
   let massMultiplier = Math.random() * MASS_DISTRIBUTION;
   let mass = Math.pow(Math.random() * MASS_DISTRIBUTION, massMultiplier);
 
-  let px = Math.random() * X_SPREAD;
-  let py = Math.random() * Y_SPREAD;
-  let pz = Math.random() * Z_SPREAD;
+  let px = (Math.random() - 0.5) * X_SPREAD;
+  let py = (Math.random() - 0.5) * Y_SPREAD;
+  let pz = (Math.random() - 0.5) * Z_SPREAD;
   let pos = createVector(px, py, pz);
 
   let vx = Math.random() * V_SPREAD;
   let vy = Math.random() * V_SPREAD;
   let vz = Math.random() * V_SPREAD;
   let vel = createVector(vx, vy, vz);
+  let color = getRandomColor();
+  let history = [];
 
-  return new Thing(mass, pos, vel)
-}
-
-function drawXYZ(vector, thick = 2, intensity = 255, alpha = 255) {
-  push();
-
-  push();
-  rotateZ(-90);
-  fill(intensity, 0, 0, 255);
-  draw3dArrow(vector.x, thick);
-  pop();
-
-  push();
-  rotateX(0);
-  fill(0, intensity, 0, 255);
-  draw3dArrow(vector.y, thick);
-  pop();
-
-  push();
-  rotateX(90);
-  fill(0, 0, intensity, 255);
-  draw3dArrow(vector.z, thick);
-  pop();
-
-  pop();
-
-}
-
-function drawUniverseCenter() {
-  drawXYZ(createVector(200, 200, 200), 0.5, 100, 50);
-}
-
-function toDeg(i) {
-  return i * 180 / Math.PI;
+  return new Thing(mass, pos, vel, createVector(), color, history)
 }
 
 function draw0XZY(v) {
-
-  let xx = v.x * v.x;
-  let yy = v.y * v.y;
-  let zz = v.z * v.z;
-
   push();
-  fill(255, 0, 255, 155);
-
-  let vx = v.x !== 0;
-  let vy = v.y !== 0;
-  let vz = v.z !== 0;
-
-  let size = Math.sqrt(xx + yy + zz);
-
-  let signX = sign(v.x);
-  let signY = sign(v.y);
-  let signZ = sign(v.z);
-
-  let angleXY = null;
-  let angleYZ = null;
-  let angleXZ = null;
-
-  push();
-  translate(v.x, v.y, v.z);
-
-  sphere(5);
-  fill(0, 0, 0, 255);
-  sphere(1);
-  pop();
-
-  fill(255, 0, 255, 10);
-  sphere(size, 64, 64);
-
-  fill(255, 0, 255, 100);
-
-  if (vx || vy) {
-    let hXY = Math.sqrt(xx + yy);
-    let cosXY = v.y / hXY;
-    angleXY = -toDeg(Math.acos(cosXY)) * signX;
-    rotateZ(angleXY);
-  }
-
-  if (vy || vz) {
-    let hYZ = Math.sqrt(yy + zz);
-    let sinYZ = v.z / hYZ;
-    angleYZ = toDeg(Math.asin(sinYZ));
-    rotateX(angleYZ);
-  }
-
-  let debug = {
-    az: az,
-    x: v.x.toFixed(2),
-    y: v.y.toFixed(2),
-    z: v.z.toFixed(2),
-    angleYZ: angleYZ ? angleYZ.toFixed(2) : 'NAN',
-    angleXY: angleXY ? angleXY.toFixed(2) : 'NAN',
-    angleXZ: angleXZ ? angleXZ.toFixed(2) : 'NAN',
-    size: size.toFixed(2)
-  };
-  $("#debug").text(JSON.stringify(debug));
-  draw3dArrow(size);
-
+  beginShape();
+  vertex(0, 0, 0);
+  vertex(v.x, v.y, v.z);
+  endShape();
   pop();
 }
-
-// function draw0XZY(v) {
-//
-//   push();
-//   fill(255, 0, 255, 155);
-//
-//
-//
-//   let xx = v.x * v.x;
-//   let yy = v.y * v.y;
-//   let zz = v.z * v.z;
-//
-//   push();
-//   translate(v.x,v.y,v.z);
-//   box(10);
-//   pop();
-//
-//   let size = Math.sqrt(xx + yy + zz);
-//
-//   fill(255, 0, 255, 50);
-//   sphere(size, 64, 64);
-//
-//   fill(255, 0, 255, 100);
-//
-//   let debug = {x: ax, y: ay, z: az};
-//
-//   $("#debug").text(JSON.stringify(debug));
-//   draw3dArrow(size);
-//   box(10);
-//
-//   pop();
-// }
 
 function sign(i) {
   return i >= 0 ? 1 : -1;
 }
 
-function draw3dArrow(size, thick = 2) {
-
-  let absSize = Math.abs(size);
-  let sizeSign = Math.sign(size);
-  let bodySize = size * 0.7;
-  let coneSize = size * 0.3;
-  if (absSize > 100) {
-    coneSize = (sizeSign * 30);
-    bodySize = size - coneSize;
-  }
-
-  push();
-  translate(0, bodySize / 2);
-  strokeWeight(0);
-  cylinder(thick, bodySize);
-  let tr = bodySize / 2 + coneSize / 2;
-  translate(5, tr / 2, 0);
-  box(5);
-  translate(-5, tr / 2, 0);
-  cone(thick * 4, coneSize);
-  pop();
-}
-
 function tick() {
+  console.log(`universe size=${universe.length}`);
   T += DELTA_TIME;
-
-  let t = T / 10;
-  $("#x").val(Math.cos(t) * 200);
-  $("#y").val(Math.sin(t) * 200);
 
   $("#time").text((T * Math.abs(DELTA_TIME)).toFixed(4) + "s");
 
@@ -322,6 +203,7 @@ function tick() {
       if (i === j) {
         continue;
       }
+
       let b = universe[j];
 
       let vd = a.pos.copy().sub(b.pos);
@@ -330,6 +212,11 @@ function tick() {
       let z = vd.z;
       let minDist = a.r + b.r;
       let realDist = Math.sqrt(x * x + y * y + z * z);
+
+      if (realDist < minDist) {
+        merges.push([i, j]);
+      }
+
       let distance = Math.max(minDist, realDist);
 
       let abForce = -geForce(a.mass, b.mass, distance);
@@ -346,12 +233,45 @@ function tick() {
     let dS = aVel.copy().mult(DELTA_TIME);
     let newPos = aPos.copy().add(dS);
 
-    newUniverse[i] = new Thing(a.mass, newPos, newVel, force, a.color);
+    let lastN;
+
+    let ssInterval = 1 / DELTA_TIME;
+
+    if (frameCount % 2 == 0 && running) {
+      a.history.push(a.pos);
+    }
+
+    if (a.history.length > HISTORY_SIZE) {
+      lastN = a.history.slice(1);
+    } else {
+      lastN = a.history;
+    }
+
+    newUniverse[i] = new Thing(a.mass, newPos, newVel, force, a.color, lastN);
 
   }
 
+  merges.forEach(merge => {
+    let a = newUniverse[merge[0]];
+    let b = newUniverse[merge[1]];
+
+    if (a && b) {
+      a.consume(b);
+      newUniverse[merge[1]] = null;
+      console.log(`${merge[0]} colliding with ${merge[1]}`);
+    } else {
+      console.log(`${merge[0]} would collide with ${merge[1]}, but last was already merged.`);
+    }
+  });
+
+  merges = [];
+
+  universe = [];
   for (let k = 0; k < size; k++) {
-    universe[k] = newUniverse[k];
+    let t = newUniverse[k];
+    if (t) {
+      universe.push(t);
+    }
   }
 
   if (T % 50 === 0) {
@@ -359,7 +279,6 @@ function tick() {
   }
 
   if (logTick) {
-
     console.log(logTick);
   }
 }
@@ -371,12 +290,16 @@ function toggleSimulation() {
 function drawMetainformation(t) {
 
   push();
-  fill(255);
-  stroke(255, 255, 0);
+  stroke(255, 255, 0, 200);
 
-  let f = t.f.copy().mult(1000000);
+  noFill();
+  strokeWeight(Math.log(t.mass));
+
+  let f = t.f.copy().mult(100);
   draw0XZY(f);
-  drawXYZ(f);
+
+  stroke(255, 0, 255, 50);
+  draw0XZY(t.vel.copy().mult(5));
 
   pop();
 }
@@ -387,10 +310,35 @@ function drawThing(t) {
   translate(t.pos.x, t.pos.y, t.pos.z);
   strokeWeight(0);
   fill(t.color);
+  drawHistory(t);
   sphere(d);
   drawMetainformation(t);
   pop();
 }
+
+function drawHistoryX(t) {
+  let c = t.color;
+  t.history.forEach((h, i) => {
+
+    push();
+    translate(h.copy().sub(t.pos));
+    fill(c[0], c[1], c[2], 10);
+    let d = 2 * t.r;
+
+    sphere(d / 5);
+    pop();
+  });
+}
+//
+// function drawHistory(t) {
+//   beginShape();
+//   t.history.forEach((h, i) => {
+//
+//     console.log(`${t.name} - ${h}`);
+//     vertex(h);
+//   });
+//   endShape();
+// }
 
 function geForce(massA, massB, distance) {
   return (G * massA * massB) / (distance * distance);
