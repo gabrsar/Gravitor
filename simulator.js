@@ -17,7 +17,23 @@ function geForce(massA, massB, distance) {
   return (G * massA * massB) / (distance * distance);
 }
 
-function tick(dynamicTime) {
+/**
+ *
+ *
+ * a cada tick,
+ * 1 - criar grupos por coordenada, colocando todas as particulas dentro dos grupos respectivos
+ * 2 - para cada grupo:
+ *    1 - obter os grupos vizinhos
+ *    2 - para cada particula
+ *      1 - o grupo e os grupos vizinhos CONJUNTO LOCAL
+ *      2 - calculo o conjunto local
+ *      3 - calculo para o resultando dos outros grupos.
+ *
+ * @returns {number}
+ */
+
+
+function tick() {
   const start = new Date();
   T += DELTA_TIME;
 
@@ -98,4 +114,92 @@ function tick(dynamicTime) {
   // updateBodiesList([...universe]);
   const finish = new Date();
   return finish - start;
+}
+
+function tick2() {
+  const groupedUniverse = universeBreaker(universe);
+  Object.entries(groupedUniverse).forEach(([groupId, group]) => {
+    const coord = groupId.split(':').map((c) => parseInt(c));
+    const neighborhoods = getNeighborhoods(groupedUniverse, ...coord);
+
+    const flatN = neighborhoods.flat();
+
+    // FINISH HERE. Use tick() probably will need to modify it to use flatN + groupedUniverse.resultant
+
+  })
+
+}
+
+function getNeighborhoods(groups, x, y, z) {
+  const neighborhoods = [];
+  for (let i = x - 1; i <= x + 1; i++) {
+    for (let j = y - 1; j <= y + 1; j++) {
+      for (let k = z - 1; k <= z + 1; k++) {
+        const groupId = `${i}:${j}:${k}`;
+        neighborhoods.push(groups[groupId]);
+      }
+    }
+  }
+  return neighborhoods;
+}
+
+
+function universeBreaker(universe) {
+  let maxX, maxY, maxZ;
+  let minX, minY, minZ;
+
+  const start = universe[0].pos;
+  minX = maxX = start.x;
+  minY = maxY = start.y;
+  minZ = maxZ = start.z;
+
+  universe.forEach((p) => {
+    const pos = p.pos;
+    if (minX < pos.x) {
+      minX = pos.x;
+    }
+    if (minY < pos.y) {
+      minY = pos.y;
+    }
+    if (minZ < pos.z) {
+      minZ = pos.z;
+    }
+
+    if (maxX > pos.x) {
+      maxX = pos.x;
+    }
+    if (maxY > pos.y) {
+      maxY = pos.y;
+    }
+    if (maxZ > pos.z) {
+      maxZ = pos.z;
+    }
+  });
+
+  const n = 10;
+
+  const dx = (maxX - minX) / n;
+  const dy = (maxY - minY) / n;
+  const dz = (maxZ - minZ) / n;
+
+  const groups = {};
+
+  universe.forEach((p) => {
+    const pos = p.pos;
+
+    const gX = Math.floor(pos.x / dx);
+    const gY = Math.floor(pos.y / dy);
+    const gZ = Math.floor(pos.z / dz);
+
+    const gId = `${gX}:${gY}:${gZ}`;
+
+    let group = groups[gId];
+
+    if (!group) {
+      group = [];
+      groups[gId] = group;
+    }
+
+    group.push(p);
+  });
 }
