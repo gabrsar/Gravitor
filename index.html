@@ -5,73 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>p5.js example</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="p5.js"></script>
+  <script src="p5.min.js"></script>
   <script src="sketch.js"></script>
   <script src="simulator.js"></script>
   <script src="thing.js"></script>
+  <script src="p5.easycam.min.js"></script>
   <script src="drawer.js"></script>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Oxygen|Roboto+Mono" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+          integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
           crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-          crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
           crossorigin="anonymous"></script>
 </head>
 <body>
 
-
 <div id="inputs">
-
   <form>
-
-    <div class="form-row">
-      <div class="col-md-12">
-        <label for="drawRate">Draw every N frames</label>
-        <input class="form-control" type="number" min="1" step="5" value="1" id="drawRate" size="3" onchange="updateDrawRate();">
+    <div class="form-group row">
+      <div class="col-sm-12 form-inline">
+        <label for="drawRate" class="col-sm-8">Draw every N frames</label>
+        <input class="col-sm-4 form-control" type="number" min="1" step="5" value="1" id="drawRate" size="3"
+               onchange="updateDrawRate();">
       </div>
     </div>
     <div class="form-row">
-      <div class="col-md-12">
-        <label for="resolution">Simulation Resolution (S)</label>
-        <input class="form-control" type="number" min="1" step="5" value="1" id="resolution" size="3" onchange="updateResolution();">
+      <div class="col-sm-12 form-inline">
+        <label for="resolution" class="col-sm-8">Simulation Resolution (ms)</label>
+        <input class="col-sm-4 form-control" type="number" min="1" step="5" value="100" id="resolution" size="3"
+               onchange="updateResolution();">
       </div>
     </div>
     <br/>
-    <fieldset class="form-group row">
-      <div class="col-sm-12">
-        <div class="col-md-12">
-          <label class="form-check-label" for="showForce">
-            <input class="form-check-input" type="checkbox" id="showForce" checked onchange="updateShowForce();">
-            Show Force
-          </label>
-        </div>
+    <div class="form-row">
+      <div class="col-sm-12 form-inline">
+        <label class="form-check-label" for="showForce">
+          <input class="form-check-input" type="checkbox" id="showForce"
+                 onchange="updateShowForce();">
+          Show Force
+        </label>
       </div>
-      <div class="col-sm-12">
-        <div class="col-md-12">
-          <label class="form-check-label" for="showVelocity">
-            <input class="form-check-input" type="checkbox" id="showVelocity" checked onchange="updateShowVelocity();">
-            Show Velocity
-          </label>
-        </div>
+    </div>
+    <div class="form-row">
+      <div class="col-sm-12 form-inline">
+        <label class="form-check-label" for="showVelocity">
+          <input class="form-check-input" type="checkbox" id="showVelocity"
+                 onchange="updateShowVelocity();">
+          Show Velocity
+        </label>
       </div>
-    </fieldset>
+    </div>
   </form>
-</div>
-<div id="meta">
-  <ol id="bodies">
-  </ol>
 </div>
 
 <div id="configuration">
   <span id="time"></span>
   <span id="fps"></span>
+  <span id="tps"></span>
   <button onclick="tick();">TICK</button>
-  <button onclick="invertTime();">-1</button>
-  <button onclick="toggleSimulation();">PAUSE</button>
+  <button id="playpause" onclick="toggleSimulation();">Start</button>
+</div>
+
+
+<div id="bodies">
+  <span id="bodiesCount"></span>
+  <ul id="bodies-list">
+    <li id="body0"><input type="button" id="body0btn"/></li>
+    <li id="body1"><input type="button" id="body1btn"/></li>
+    <li id="body2"><input type="button" id="body2btn"/></li>
+    <li id="body3"><input type="button" id="body3btn"/></li>
+    <li id="body4"><input type="button" id="body4btn"/></li>
+    <li id="body5"><input type="button" id="body5btn"/></li>
+    <li id="body6"><input type="button" id="body6btn"/></li>
+    <li id="body7"><input type="button" id="body7btn"/></li>
+    <li id="body8"><input type="button" id="body8btn"/></li>
+    <li id="body9"><input type="button" id="body9btn"/></li>
+  </ul>
 </div>
 
 </body>

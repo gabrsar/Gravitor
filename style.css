@@ -3,35 +3,46 @@
 }
 
 body {
-  padding: 0;
-  margin: 0;
+    margin: 0;
+    display: flex;
 }
 
-h1 {
-  padding: 0;
-  margin: 0;
-}
-
-#angles, #debug, #configuration, #inputs {
+#angles, #debug, #configuration, #inputs,#bodies {
   color: #FFF;
-  position: absolute;
+  position: fixed;
   padding: 1em 1em;
   background: rgba(100, 100, 100, 0.4);
 }
 
-#angles{
-  top: 1em;
-  left: 1em;
-}
 #configuration {
   top: 1em;
   right: 1em;
 }
+#inputs {
+    top: 1em;
+    left: 1em;
+}
+#bodies {
+    bottom: 1em;
+    left: 1em;
+    font-family: 'Roboto Mono', monospace;
+}
 
-#debug{
-  font-family: 'Roboto Mono', monospace;
-  bottom: 1em;
-  left: 1em;
+#bodies input {
+    font-family: 'Roboto Mono', monospace;
+    background: transparent;
+    color: #FFF;
+    border: none;
+    padding: 0;
+}
+#bodies ul {
+    text-align: left;
+    list-style-type:none;
+    padding: 0;
+}
+
+#fps, #tps, #time {
+    padding:1em;
 }
 
 #time {

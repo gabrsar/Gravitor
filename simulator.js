@@ -4,25 +4,24 @@ let cZ = 0;
 let T = 0;
 let universe = [];
 let merges = [];
-let DELTA_TIME = 0.1; //s
+let DELTA_TIME = 0.1;//s
 let G = 6.67408 * 10;
-let MASS_DISTRIBUTION = 5;
+let MASS_DISTRIBUTION = 2;
 let X_SPREAD = 400;
 let Y_SPREAD = 400;
-let Z_SPREAD = 50;
+let Z_SPREAD = 400;
+let V_SPREAD = 10;
 let running = false;
-let logTick = null;
-let drawRate = 1;
 
 function geForce(massA, massB, distance) {
   return (G * massA * massB) / (distance * distance);
 }
 
-function tick() {
-  console.log(`universe size=${universe.length}`);
+function tick(dynamicTime) {
+  const start = new Date();
   T += DELTA_TIME;
 
-  $("#time").text((T * Math.abs(DELTA_TIME)).toFixed(4) + "s");
+  $("#time").text((T * Math.abs(DELTA_TIME)).toFixed(3) + "s");
 
   let size = universe.length;
   let newUniverse = Array(size);
@@ -44,11 +43,8 @@ function tick() {
       let b = universe[j];
 
       let vd = a.pos.copy().sub(b.pos);
-      let x = vd.x;
-      let y = vd.y;
-      let z = vd.z;
       let minDist = a.r + b.r;
-      let realDist = Math.sqrt(x * x + y * y + z * z);
+      let realDist = a.pos.dist(b.pos);
 
       if (realDist < minDist) {
         merges.push([i, j]);
@@ -62,16 +58,15 @@ function tick() {
       force.add(nvd);
     }
 
-    let aceleration = force.div(a.mass);
+    let acceleration = force.div(a.mass);
 
-    let dV = aceleration.mult(DELTA_TIME);
+    let dV = acceleration.mult(DELTA_TIME);
     let newVel = aVel.copy().add(dV);
 
     let dS = aVel.copy().mult(DELTA_TIME);
     let newPos = aPos.copy().add(dS);
 
-    newUniverse[i] = new Thing(a.mass, newPos, newVel, force, a.color);
-
+    newUniverse[i] = new Thing(a.name, a.mass, newPos, newVel, force, a.color);
   }
 
   let updateBodiesList = false;
@@ -101,5 +96,6 @@ function tick() {
   }
 
   // updateBodiesList([...universe]);
-
+  const finish = new Date();
+  return finish - start;
 }

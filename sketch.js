@@ -1,7 +1,5 @@
-console.log("SKETCH.JS");
-
 function updateResolution() {
-  DELTA_TIME = parseFloat(parseInt($("#resolution").val()) / 10);
+  DELTA_TIME = parseFloat(parseInt($("#resolution").val()) / 1000);
 }
 
 function updateShowForce() {
@@ -12,16 +10,14 @@ function updateShowVelocity() {
   SHOW_VELOCITY = $("#showVelocity").prop('checked');
 }
 
-function invertTime() {
-  DELTA_TIME = -DELTA_TIME;
-}
-
 function updateDrawRate() {
-  drawRate = $("#drawRate").val();
+  DRAW_RATE = $("#drawRate").val();
 }
 
 function toggleSimulation() {
   running = !running;
+  $("#playpause").text(running ? 'Pause' : 'Run');
+
 }
 
 function updateBodiesList(universe) {
@@ -30,7 +26,7 @@ function updateBodiesList(universe) {
     return a.mass - b.mass;
   });
 
-  universe.each(function(i){
+  universe.each(function (i) {
 
   })
 
