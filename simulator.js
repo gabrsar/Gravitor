@@ -13,6 +13,16 @@ let Z_SPREAD = 400;
 let V_SPREAD = 10;
 let running = false;
 
+function groupSorter(a, b) {
+  if (a.id === b.id) {
+    return 0;
+  } else if (a.id < b.id) {
+    return -1;
+  } else {
+    return 1
+  }
+}
+
 function geForce(massA, massB, distance) {
   return (G * massA * massB) / (distance * distance);
 }
@@ -118,17 +128,36 @@ function tick() {
 
 function tick2() {
   const groupedUniverse = universeBreaker(universe);
+
+  Object.
   Object.entries(groupedUniverse).forEach(([groupId, group]) => {
     const coord = groupId.split(':').map((c) => parseInt(c));
     const neighborhoods = getNeighborhoods(groupedUniverse, ...coord);
 
-    const flatN = neighborhoods.flat();
+
+    const outros =
+
 
     // FINISH HERE. Use tick() probably will need to modify it to use flatN + groupedUniverse.resultant
 
   })
 
 }
+
+
+function getNeighborhoods(groups, x, y, z) {
+  const neighborhoods = [];
+  for (let i = x - 1; i <= x + 1; i++) {
+    for (let j = y - 1; j <= y + 1; j++) {
+      for (let k = z - 1; k <= z + 1; k++) {
+        const groupId = `${i}:${j}:${k}`;
+        neighborhoods.push(groups[groupId]);
+      }
+    }
+  }
+  return neighborhoods.sort(groupSorter);
+}
+
 
 function getNeighborhoods(groups, x, y, z) {
   const neighborhoods = [];
@@ -145,6 +174,9 @@ function getNeighborhoods(groups, x, y, z) {
 
 
 function universeBreaker(universe) {
+
+  //TODO: use dynamic breaks based on the universe size && particles numbers
+
   let maxX, maxY, maxZ;
   let minX, minY, minZ;
 
@@ -196,10 +228,41 @@ function universeBreaker(universe) {
     let group = groups[gId];
 
     if (!group) {
-      group = [];
+      group = new Group(gId);
       groups[gId] = group;
     }
 
     group.push(p);
   });
+  return groups;
+}
+
+class Group {
+  constructor(id) {
+    this.id = id;
+    this.particles = [];
+    this.resultant = null;
+  }
+
+  push(particle) {
+    this.particles.push(particle);
+  }
+
+  getResultant() {
+    if (this.resultant) {
+      return this.resultant;
+    }
+
+    let totalMass = 0;
+    let acc = createVector(0, 0, 0);
+
+    this.particles.forEach((p) => {
+      acc.add(p.pos.copy().mult(p.mass));
+      totalMass += p.mass;
+    });
+
+    acc.div(totalMass);
+    this.resultant = acc;
+    return acc;
+  }
 }

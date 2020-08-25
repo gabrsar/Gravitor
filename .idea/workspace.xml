@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="69cfab4e-3515-4a72-b090-8e0bc49c5ccf" name="Default Changelist" comment="" />
+    <list default="true" id="69cfab4e-3515-4a72-b090-8e0bc49c5ccf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator.js" beforeDir="false" afterPath="$PROJECT_DIR$/simulator.js" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,12 +83,24 @@
       <workItem from="1597276266185" duration="8975000" />
       <workItem from="1597519631319" duration="25000" />
       <workItem from="1598190129712" duration="5078000" />
-      <workItem from="1598210182295" duration="9017000" />
+      <workItem from="1598210182295" duration="9154000" />
+      <workItem from="1598359069499" duration="2953000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="masterDetails">
     <states>
